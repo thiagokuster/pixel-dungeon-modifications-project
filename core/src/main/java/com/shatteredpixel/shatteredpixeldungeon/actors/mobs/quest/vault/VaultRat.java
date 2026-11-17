@@ -34,7 +34,6 @@ public class VaultRat extends Rat {
 	{
 		activateSteathGameplayBehaviour();
 
-		HP = HT = 8;
 		defenseSkill = 18;
 
 		maxLvl = 30;
@@ -44,17 +43,12 @@ public class VaultRat extends Rat {
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
-	}
-
-	@Override
 	public int attackSkill( Char target ) {
 		return 24;
 	}
 
 	@Override
 	public String description() {
-		return Messages.get(this, "desc");
+		return Messages.get(Rat.class, "desc") + "\n\n" + super.description();
 	}
 }

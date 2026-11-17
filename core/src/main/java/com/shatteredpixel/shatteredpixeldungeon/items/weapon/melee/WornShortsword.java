@@ -40,16 +40,6 @@ public class WornShortsword extends MeleeWeapon {
 	}
 
 	@Override
-	public int min(int lvl) {
-		return super.min(lvl) + 2;
-	}
-
-	@Override
-	public int max(int lvl) {
-		return super.max(lvl) + 4;
-	}
-
-	@Override
 	protected int baseChargeUse(Hero hero, Char target){
 		if (hero.buff(Sword.CleaveTracker.class) != null){
 			return 0;

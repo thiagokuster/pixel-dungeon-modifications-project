@@ -52,11 +52,6 @@ public class FetidRat extends Rat {
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
-	}
-
-	@Override
 	public int attackSkill( Char target ) {
 		return 12;
 	}

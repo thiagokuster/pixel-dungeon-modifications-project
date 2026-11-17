@@ -41,11 +41,6 @@ public class Albino extends Rat {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
-	}
-
-	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		if (damage > 0 && Random.Int( 2 ) == 0) {
