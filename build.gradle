@@ -12,7 +12,7 @@ allprojects {
 
     ext {
         appName = 'Pixel Dungeon Alterado'
-        appPackageName = 'com.local.pixeldungeonalterado'
+        appPackageName = 'com.thiagokuster.pixeldungeonalterado'
 
         //Full releases gets +2 on version code, needed for an F-Droid quirk
         appVersionCode = 922

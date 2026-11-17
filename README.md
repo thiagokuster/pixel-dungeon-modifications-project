@@ -1,29 +1,32 @@
 # Pixel Dungeon Alterado
 
-Roguelike de masmorras em código aberto, baseado no [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon), de Evan Debenham. O Shattered, por sua vez, é baseado no [Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), de [Watabou](https://watabou.itch.io/).
+Roguelike de masmorras em código aberto, feito a partir do [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon), de Evan Debenham. O Shattered é baseado no [Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), de [Watabou](https://watabou.itch.io/).
 
-Este repositório é uma cópia independente. Não é o jogo oficial e não recebe as atualizações dele automaticamente.
+Este repositório não é o jogo oficial. O nome do app é Pixel Dungeon Alterado e o ID do pacote é `com.thiagokuster.pixeldungeonalterado`, os dois definidos em `build.gradle`. Esse ID separa a instalação e os saves do Shattered Pixel Dungeon.
 
-O código está sob a licença [GPL-3.0](LICENSE.txt). Versões modificadas também precisam permanecer em código aberto, com a mesma licença. Os créditos de quem já contribuiu permanecem no jogo.
+O código está sob a licença [GPL-3.0](LICENSE.txt). Quem modificar e distribuir também precisa publicar o código-fonte sob a mesma licença. Os créditos de Evan Debenham, Watabou e dos demais colaboradores permanecem no jogo.
 
 ## Compilar
 
-Os guias estão em `/docs`:
+É preciso um JDK 21. Os guias estão em `/docs`:
 
 - [Desktop](docs/getting-started-desktop.md)
 - [Android](docs/getting-started-android.md)
 - [iOS](docs/getting-started-ios.md)
 
-No desktop, com um JDK 21:
+No desktop:
 
 ```
 ./gradlew desktop:debug
 ```
 
-## Atualizar a partir do original
+Antes de publicar na Google Play, leia o final de [docs/getting-started-android.md](docs/getting-started-android.md). A loja remove apps que parecem o jogo oficial.
 
-O remoto `upstream` aponta para o repositório oficial:
+## Trazer atualizações do original
+
+Este repositório foi criado como uma cópia, não como um fork do GitHub, então um clone novo não acompanha o original sozinho. Para buscar as versões novas do Evan:
 
 ```
+git remote add upstream https://github.com/00-Evan/shattered-pixel-dungeon.git
 git fetch upstream
 ```
