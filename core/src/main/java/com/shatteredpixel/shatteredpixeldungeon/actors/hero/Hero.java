@@ -138,6 +138,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClove
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.DualWield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
@@ -495,7 +496,11 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean attack(Char enemy, float dmgMulti, float dmgBonus, float accMulti) {
+		boolean melee = DualWield.primaryMeleeSwing(this);
 		boolean result = super.attack(enemy, dmgMulti, dmgBonus, accMulti);
+		if (melee && isAlive() && enemy != null && enemy.isAlive() && !enemy.isInvulnerable(getClass())) {
+			DualWield.followUp(this, enemy);
+		}
 		if (!(belongings.attackingWeapon() instanceof MissileWeapon)){
 			if (buff(Talent.PreciseAssaultTracker.class) != null){
 				buff(Talent.PreciseAssaultTracker.class).detach();
@@ -745,6 +750,7 @@ public class Hero extends Char {
 		KindOfWeapon w = belongings.attackingWeapon();
 		if (!(w instanceof Weapon))             return true;
 		if (RingOfForce.fightingUnarmed(this))  return true;
+		if (DualWield.usingBoth(this) && STR() < DualWield.combinedStr(this)) return false;
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
 
@@ -788,6 +794,12 @@ public class Hero extends Char {
 		float delay = 1f;
 
 		if (!RingOfForce.fightingUnarmed(this)) {
+			if (DualWield.usingBoth(this) && belongings.attackingWeapon() == belongings.weapon()) {
+				float mainDelay = belongings.weapon.delayFactor(this);
+				float offDelay = belongings.offhand.delayFactor(this);
+				float speed = (((1f / mainDelay) + (1f / offDelay)) / 2f) * 0.85f;
+				return 1f / speed;
+			}
 			
 			return delay * belongings.attackingWeapon().delayFactor( this );
 			

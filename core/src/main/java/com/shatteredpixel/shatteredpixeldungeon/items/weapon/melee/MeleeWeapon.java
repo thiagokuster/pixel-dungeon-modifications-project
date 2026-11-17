@@ -87,6 +87,8 @@ public class MeleeWeapon extends Weapon {
 		ArrayList<String> actions = super.actions(hero);
 		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
 			actions.add(AC_ABILITY);
+		} else if (!isEquipped(hero) && grip() != Grip.TWO_HANDED) {
+			actions.add(AC_OFFHAND);
 		}
 		return actions;
 	}
@@ -102,6 +104,10 @@ public class MeleeWeapon extends Weapon {
 
 	@Override
 	public void execute(Hero hero, String action) {
+		if (action.equals(AC_OFFHAND)) {
+			equipOffhand(hero);
+			return;
+		}
 		super.execute(hero, action);
 
 		if (action.equals(AC_ABILITY)){
@@ -246,6 +252,67 @@ public class MeleeWeapon extends Weapon {
 
 	public int tier;
 
+	public enum Grip {
+		LIGHT(0.60f),
+		MEDIUM(0.50f),
+		TWO_HANDED(0f);
+
+		public final float offhandDamage;
+
+		Grip(float offhandDamage) {
+			this.offhandDamage = offhandDamage;
+		}
+	}
+
+	public Grip grip() {
+		if (this instanceof Dagger || this instanceof Rapier || this instanceof Gloves
+				|| this instanceof Cudgel || this instanceof Shortsword || this instanceof Dirk
+				|| this instanceof Sai || this instanceof WornShortsword || this instanceof MagesStaff) {
+			return Grip.LIGHT;
+		}
+		if (this instanceof Sword || this instanceof Mace || this instanceof Scimitar
+				|| this instanceof RoundShield || this instanceof HandAxe || this instanceof Quarterstaff
+				|| this instanceof Sickle) {
+			return Grip.MEDIUM;
+		}
+		return Grip.TWO_HANDED;
+	}
+
+	public static final String AC_OFFHAND = "OFFHAND";
+
+	public boolean equipOffhand(Hero hero) {
+		if (grip() == Grip.TWO_HANDED) {
+			GLog.w(Messages.get(MeleeWeapon.class, "offhand_blocked"));
+			return false;
+		}
+		if (hero.belongings.weapon instanceof MeleeWeapon
+				&& ((MeleeWeapon) hero.belongings.weapon).grip() == Grip.TWO_HANDED) {
+			GLog.w(Messages.get(MeleeWeapon.class, "offhand_main_two"));
+			return false;
+		}
+		if (hero.belongings.weapon == this || hero.belongings.secondWep == this) {
+			return false;
+		}
+
+		detachAll(hero.belongings.backpack);
+
+		if (hero.belongings.offhand == null || hero.belongings.offhand.doUnequip(hero, true)) {
+			hero.belongings.offhand = this;
+			activate(hero);
+			updateQuickslot();
+			cursedKnown = true;
+			if (cursed) {
+				equipCursed(hero);
+				GLog.n(Messages.get(KindOfWeapon.class, "equip_cursed"));
+			}
+			hero.spendAndNext(timeToEquip(hero));
+			return true;
+		} else {
+			collect(hero.belongings.backpack);
+			return false;
+		}
+	}
+
 	@Override
 	public int min(int lvl) {
 		return  tier +  //base
@@ -323,6 +390,8 @@ public class MeleeWeapon extends Weapon {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
 			}
 		}
+
+		info += "\n\n" + Messages.get(MeleeWeapon.class, "grip_" + grip().name().toLowerCase(java.util.Locale.ROOT));
 
 		String statsInfo = statsInfo();
 		if (!statsInfo.equals("")) info += "\n\n" + statsInfo;

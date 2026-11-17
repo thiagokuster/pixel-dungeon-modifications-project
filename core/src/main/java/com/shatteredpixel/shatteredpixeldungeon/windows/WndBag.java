@@ -244,13 +244,15 @@ public class WndBag extends WndTabbed {
 		
 		// Equipped items
 		Belongings stuff = Dungeon.hero.belongings;
-		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
+		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ), Messages.get(this, "main_hand") );
+		placeItem( stuff.offhand != null ? stuff.offhand : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ), Messages.get(this, "off_hand") );
 		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
 		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
 		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+		placeItem( stuff.thirdRing != null ? stuff.thirdRing : new Placeholder( ItemSpriteSheet.RING_HOLDER ), Messages.get(this, "third_ring") );
 
-		int equipped = 5;
+		int equipped = 7;
 
 		//the container itself if it's not the root backpack
 		if (container != Dungeon.hero.belongings.backpack){
@@ -278,6 +280,10 @@ public class WndBag extends WndTabbed {
 	}
 	
 	protected void placeItem( final Item item ) {
+		placeItem(item, null);
+	}
+
+	protected void placeItem( final Item item, String label ) {
 
 		count++;
 		
@@ -351,6 +357,16 @@ public class WndBag extends WndTabbed {
 		};
 		slot.setRect( x, y, slotWidth, slotHeight );
 		add(slot);
+
+		if (label != null) {
+			BitmapText text = new BitmapText(PixelScene.pixelFont);
+			text.text(label);
+			text.scale.set(0.5f);
+			text.measure();
+			text.x = slot.left() + 1;
+			text.y = slot.bottom() - text.height() - 1;
+			add(text);
+		}
 
 		if (item == null || (selector != null && !selector.itemSelectable(item))){
 			slot.enable(false);

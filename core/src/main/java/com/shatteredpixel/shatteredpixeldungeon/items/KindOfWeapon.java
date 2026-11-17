@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -93,7 +94,9 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero != null && (hero.belongings.weapon() == this || hero.belongings.secondWep() == this);
+		return hero != null && (hero.belongings.weapon() == this
+				|| hero.belongings.secondWep() == this
+				|| hero.belongings.offhand() == this);
 	}
 
 	private static boolean isSwiftEquipping = false;
@@ -104,6 +107,14 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	@Override
 	public boolean doEquip( Hero hero ) {
+
+		if (this instanceof MeleeWeapon
+				&& ((MeleeWeapon) this).grip() == MeleeWeapon.Grip.TWO_HANDED
+				&& hero.belongings.offhand != null) {
+			if (!hero.belongings.offhand.doUnequip(hero, true, false)) {
+				return false;
+			}
+		}
 
 		isSwiftEquipping = false;
 		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP)){
@@ -123,6 +134,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 		}
 
 		detachAll( hero.belongings.backpack );
+
+		boolean wasOffhand = hero.belongings.offhand == this;
+		if (wasOffhand) {
+			hero.belongings.offhand = null;
+		}
 		
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
 			
@@ -208,15 +224,19 @@ abstract public class KindOfWeapon extends EquipableItem {
 	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		boolean second = hero.belongings.secondWep == this;
+		boolean off = hero.belongings.offhand == this;
 
 		if (second){
 			//do this first so that the item can go to a full inventory
 			hero.belongings.secondWep = null;
 		}
+		if (off){
+			hero.belongings.offhand = null;
+		}
 
 		if (super.doUnequip( hero, collect, single )) {
 
-			if (!second){
+			if (!second && !off){
 				hero.belongings.weapon = null;
 			}
 			return true;
@@ -225,6 +245,9 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 			if (second){
 				hero.belongings.secondWep = this;
+			}
+			if (off){
+				hero.belongings.offhand = this;
 			}
 			return false;
 

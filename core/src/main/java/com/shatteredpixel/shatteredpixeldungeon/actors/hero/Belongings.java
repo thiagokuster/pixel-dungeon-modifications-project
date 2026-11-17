@@ -84,6 +84,8 @@ public class Belongings implements Iterable<Item> {
 	public Artifact artifact = null;
 	public KindofMisc misc = null;
 	public Ring ring = null;
+	public Ring thirdRing = null;
+	public KindOfWeapon offhand = null;
 
 	//used when thrown weapons temporary become the current weapon
 	public KindOfWeapon thrownWeapon = null;
@@ -155,6 +157,22 @@ public class Belongings implements Iterable<Item> {
 		}
 	}
 
+	public Ring thirdRing(){
+		if (!lostInventory() || (thirdRing != null && thirdRing.keptThroughLostInventory())){
+			return thirdRing;
+		} else {
+			return null;
+		}
+	}
+
+	public KindOfWeapon offhand(){
+		if (!lostInventory() || (offhand != null && offhand.keptThroughLostInventory())){
+			return offhand;
+		} else {
+			return null;
+		}
+	}
+
 	public KindOfWeapon secondWep(){
 		if (!lostInventory() || (secondWep != null && secondWep.keptThroughLostInventory())){
 			return secondWep;
@@ -170,6 +188,8 @@ public class Belongings implements Iterable<Item> {
 	private static final String ARTIFACT   = "artifact";
 	private static final String MISC       = "misc";
 	private static final String RING       = "ring";
+	private static final String THIRD_RING = "third_ring";
+	private static final String OFFHAND    = "offhand";
 
 	private static final String SECOND_WEP = "second_wep";
 
@@ -182,6 +202,8 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( ARTIFACT, artifact );
 		bundle.put( MISC, misc );
 		bundle.put( RING, ring );
+		bundle.put( THIRD_RING, thirdRing );
+		bundle.put( OFFHAND, offhand );
 		bundle.put( SECOND_WEP, secondWep );
 	}
 
@@ -207,6 +229,12 @@ public class Belongings implements Iterable<Item> {
 		ring = (Ring) bundle.get(RING);
 		if (ring() != null)         ring().activate( owner );
 
+		thirdRing = (Ring) bundle.get(THIRD_RING);
+		if (thirdRing() != null)    thirdRing().activate( owner );
+
+		offhand = (KindOfWeapon) bundle.get(OFFHAND);
+		if (offhand() != null)      offhand().activate( owner );
+
 		secondWep = (KindOfWeapon) bundle.get(SECOND_WEP);
 		if (secondWep() != null)    secondWep().activate(owner);
 
@@ -215,11 +243,11 @@ public class Belongings implements Iterable<Item> {
 
 	public void clear(){
 		backpack.clear();
-		weapon = secondWep = null;
+		weapon = secondWep = offhand = null;
 		armor = null;
 		artifact = null;
 		misc = null;
-		ring = null;
+		ring = thirdRing = null;
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -381,6 +409,22 @@ public class Belongings implements Iterable<Item> {
 				Badges.validateItemLevelAquired(ring());
 			}
 		}
+		if (thirdRing() != null) {
+			if (ShardOfOblivion.passiveIDDisabled()){
+				thirdRing().setIDReady();
+			} else {
+				thirdRing().identify();
+				Badges.validateItemLevelAquired(thirdRing());
+			}
+		}
+		if (offhand() != null) {
+			if (ShardOfOblivion.passiveIDDisabled() && offhand() instanceof Weapon){
+				((Weapon) offhand()).setIDReady();
+			} else {
+				offhand().identify();
+				Badges.validateItemLevelAquired(offhand());
+			}
+		}
 		if (ShardOfOblivion.passiveIDDisabled()){
 			GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready_worn"));
 		}
@@ -393,7 +437,7 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void uncurseEquipped() {
-		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring(), secondWep());
+		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring(), thirdRing(), offhand(), secondWep());
 	}
 	
 	public Item randomUnequipped() {
@@ -425,7 +469,7 @@ public class Belongings implements Iterable<Item> {
 		
 		private Iterator<Item> backpackIterator = backpack.iterator();
 		
-		private Item[] equipped = {weapon, armor, artifact, misc, ring, secondWep};
+		private Item[] equipped = {weapon, armor, artifact, misc, ring, secondWep, offhand, thirdRing};
 		private int backpackIndex = equipped.length;
 		
 		@Override
@@ -473,6 +517,12 @@ public class Belongings implements Iterable<Item> {
 				break;
 			case 5:
 				equipped[5] = secondWep = null;
+				break;
+			case 6:
+				equipped[6] = offhand = null;
+				break;
+			case 7:
+				equipped[7] = thirdRing = null;
 				break;
 			default:
 				backpackIterator.remove();

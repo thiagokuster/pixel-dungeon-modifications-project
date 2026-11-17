@@ -291,7 +291,11 @@ abstract public class Weapon extends KindOfWeapon {
 		int encumbrance = 0;
 		
 		if( owner instanceof Hero ){
-			encumbrance = STRReq() - ((Hero)owner).STR();
+			Hero hero = (Hero)owner;
+			encumbrance = STRReq() - hero.STR();
+			if (DualWield.usingBoth(hero) && (this == hero.belongings.weapon || this == hero.belongings.offhand)) {
+				encumbrance = Math.max(encumbrance, DualWield.combinedStr(hero) - hero.STR());
+			}
 		}
 
 		float ACC = this.ACC;
@@ -311,7 +315,11 @@ abstract public class Weapon extends KindOfWeapon {
 	protected float baseDelay( Char owner ){
 		float delay = augment.delayFactor(this.DLY);
 		if (owner instanceof Hero) {
-			int encumbrance = STRReq() - ((Hero)owner).STR();
+			Hero hero = (Hero)owner;
+			int encumbrance = STRReq() - hero.STR();
+			if (DualWield.usingBoth(hero) && (this == hero.belongings.weapon || this == hero.belongings.offhand)) {
+				encumbrance = Math.max(encumbrance, DualWield.combinedStr(hero) - hero.STR());
+			}
 			if (encumbrance > 0){
 				delay *= Math.pow( 1.2, encumbrance );
 			}

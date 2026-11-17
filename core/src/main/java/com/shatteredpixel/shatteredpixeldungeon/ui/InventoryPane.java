@@ -71,6 +71,9 @@ public class InventoryPane extends Component {
 
 	private ArrayList<InventorySlot> equipped;
 	private ArrayList<InventorySlot> bagItems;
+	private BitmapText mainHandLabel;
+	private BitmapText offHandLabel;
+	private BitmapText thirdRingLabel;
 
 	private Image gold;
 	private BitmapText goldTxt;
@@ -81,7 +84,7 @@ public class InventoryPane extends Component {
 	private ArrayList<BagButton> bags;
 
 	public static final int WIDTH = 187;
-	public static final int HEIGHT = 82;
+	public static final int HEIGHT = 107;
 
 	private static final int SLOT_WIDTH = 17;
 	private static final int SLOT_HEIGHT = 24;
@@ -153,10 +156,22 @@ public class InventoryPane extends Component {
 		};
 
 		equipped = new ArrayList<>();
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 7; i++){
 			InventorySlot btn = new InventoryPaneSlot(null);
 			equipped.add(btn);
 			add(btn);
+		}
+
+		mainHandLabel = new BitmapText(PixelScene.pixelFont);
+		offHandLabel = new BitmapText(PixelScene.pixelFont);
+		thirdRingLabel = new BitmapText(PixelScene.pixelFont);
+		mainHandLabel.text(Messages.get(WndBag.class, "main_hand"));
+		offHandLabel.text(Messages.get(WndBag.class, "off_hand"));
+		thirdRingLabel.text(Messages.get(WndBag.class, "third_ring"));
+		for (BitmapText label : new BitmapText[]{mainHandLabel, offHandLabel, thirdRingLabel}){
+			label.scale.set(0.5f);
+			label.measure();
+			add(label);
 		}
 
 		gold = Icons.get(Icons.COIN_SML);
@@ -213,10 +228,16 @@ public class InventoryPane extends Component {
 		bg.size(width, height);
 
 		float left = x+4;
-		for (InventorySlot i : equipped){
-			i.setRect(left, y+4, SLOT_WIDTH, SLOT_HEIGHT);
-			left = i.right()+1;
+		for (int i = 0; i < 5; i++){
+			equipped.get(i).setRect(left, y+4, SLOT_WIDTH, SLOT_HEIGHT);
+			left = equipped.get(i).right()+1;
 		}
+		float extraTop = y + 4 + (SLOT_HEIGHT + 1) * 3;
+		equipped.get(5).setRect(x+4, extraTop, SLOT_WIDTH, SLOT_HEIGHT);
+		equipped.get(6).setRect(x+4 + SLOT_WIDTH + 1, extraTop, SLOT_WIDTH, SLOT_HEIGHT);
+		placeSlotLabel(mainHandLabel, equipped.get(0));
+		placeSlotLabel(offHandLabel, equipped.get(5));
+		placeSlotLabel(thirdRingLabel, equipped.get(6));
 
 		promptTxt.maxWidth((int) (width - (left - x) - bg.marginRight()));
 		if (promptTxt.height() > 10){
@@ -257,6 +278,11 @@ public class InventoryPane extends Component {
 
 		super.layout();
 	}
+
+	private void placeSlotLabel(BitmapText label, InventorySlot slot) {
+		label.x = slot.left() + 1;
+		label.y = slot.bottom() - label.height() - 1;
+	}
 	
 	public void alpha( float value ){
 		bg.alpha( value );
@@ -264,6 +290,9 @@ public class InventoryPane extends Component {
 		for (InventorySlot slot : equipped){
 			slot.alpha( value );
 		}
+		mainHandLabel.alpha(value);
+		offHandLabel.alpha(value);
+		thirdRingLabel.alpha(value);
 		for (InventorySlot slot : bagItems){
 			slot.alpha( value );
 		}
@@ -302,6 +331,8 @@ public class InventoryPane extends Component {
 		equipped.get(2).item(stuff.artifact == null ? new WndBag.Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) : stuff.artifact);
 		equipped.get(3).item(stuff.misc == null ? new WndBag.Placeholder( ItemSpriteSheet.SOMETHING ) : stuff.misc);
 		equipped.get(4).item(stuff.ring == null ? new WndBag.Placeholder( ItemSpriteSheet.RING_HOLDER ) : stuff.ring);
+		equipped.get(5).item(stuff.offhand == null ? new WndBag.Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) : stuff.offhand);
+		equipped.get(6).item(stuff.thirdRing == null ? new WndBag.Placeholder( ItemSpriteSheet.RING_HOLDER ) : stuff.thirdRing);
 
 		ArrayList<Item> items = (ArrayList<Item>) lastBag.items.clone();
 

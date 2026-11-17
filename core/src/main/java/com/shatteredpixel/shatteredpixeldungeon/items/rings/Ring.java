@@ -412,6 +412,9 @@ public class Ring extends KindofMisc {
 		if (hero.belongings.misc() != null && hero.belongings.misc().getClass() == getClass()){
 			bonus += ((Ring)hero.belongings.misc()).soloBonus();
 		}
+		if (hero.belongings.thirdRing() != null && hero.belongings.thirdRing().getClass() == getClass()){
+			bonus += hero.belongings.thirdRing().soloBonus() / 2;
+		}
 		return bonus;
 	}
 
@@ -423,6 +426,9 @@ public class Ring extends KindofMisc {
 		}
 		if (hero.belongings.misc() != null && hero.belongings.misc().getClass() == getClass()){
 			bonus += ((Ring)hero.belongings.misc()).soloBuffedBonus();
+		}
+		if (hero.belongings.thirdRing() != null && hero.belongings.thirdRing().getClass() == getClass()){
+			bonus += hero.belongings.thirdRing().soloBuffedBonus() / 2;
 		}
 		return bonus;
 	}
@@ -448,11 +454,20 @@ public class Ring extends KindofMisc {
 		}
 
 		public int level(){
-			return Ring.this.soloBonus();
+			return thirdSlotBonus(Ring.this.soloBonus());
 		}
 
 		public int buffedLvl(){
-			return Ring.this.soloBuffedBonus();
+			return thirdSlotBonus(Ring.this.soloBuffedBonus());
+		}
+
+		private int thirdSlotBonus(int bonus){
+			if (Dungeon.hero == null || Dungeon.hero.belongings.thirdRing != Ring.this) {
+				return bonus;
+			}
+			if (bonus > 0) return bonus / 2;
+			if (bonus < 0) return -((-bonus) / 2);
+			return 0;
 		}
 
 	}
