@@ -479,6 +479,12 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.RAPIER);
 			case CLERIC:
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME);
+			case GNOLL:
+				return new ItemSprite(ItemSpriteSheet.DAGGER);
+			case SHAMAN:
+				return new ItemSprite(ItemSpriteSheet.MAGES_STAFF);
+			case NECROMANCER:
+				return new ItemSprite(ItemSpriteSheet.MAGES_STAFF);
 			default:
 				return null;
 		}

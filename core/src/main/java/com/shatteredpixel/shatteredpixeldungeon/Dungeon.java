@@ -939,6 +939,17 @@ public class Dungeon {
 	
 		GameScene.updateFog(l, t, width, height);
 
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClassPerks.seesTraps(hero)) {
+			for (int i = 0; i < level.length(); i++) {
+				if (level.heroFOV[i]) {
+					com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap trap = level.traps.get(i);
+					if (trap != null && !trap.visible) {
+						level.discover(i);
+					}
+				}
+			}
+		}
+
 		if (hero.buff(MindVision.class) != null || hero.buff(DivineSense.DivineSenseTracker.class) != null){
 			for (Mob m : level.mobs.toArray(new Mob[0])){
 				if (m instanceof Mimic && m.alignment == Char.Alignment.NEUTRAL && ((Mimic) m).stealthy()){

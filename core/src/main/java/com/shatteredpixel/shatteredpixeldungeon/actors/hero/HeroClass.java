@@ -43,6 +43,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildM
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gnoll.Ambush;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gnoll.Negotiation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gnoll.Trail;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.necromancer.DeathCurse;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.necromancer.DrainLife;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.necromancer.SummonSkeleton;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.shaman.GuardianSpirit;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.shaman.NaturesCurse;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.shaman.WeaknessTotemAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.HeroicLeap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Shockwave;
@@ -74,6 +83,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfBargain;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NecroStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShamanStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpike;
@@ -89,7 +101,10 @@ public enum HeroClass {
 	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
-	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN );
+	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN ),
+	GNOLL( HeroSubClass.TRACKER, HeroSubClass.MERCHANT ),
+	SHAMAN( HeroSubClass.WAR_SHAMAN, HeroSubClass.SPIRIT_SHAMAN ),
+	NECROMANCER( HeroSubClass.DEATH_LORD, HeroSubClass.VAMPIRE );
 
 	private HeroSubClass[] subClasses;
 
@@ -140,6 +155,18 @@ public enum HeroClass {
 			case CLERIC:
 				initCleric( hero );
 				break;
+
+			case GNOLL:
+				initGnoll( hero );
+				break;
+
+			case SHAMAN:
+				initShaman( hero );
+				break;
+
+			case NECROMANCER:
+				initNecromancer( hero );
+				break;
 		}
 
 		if (SPDSettings.quickslotWaterskin()) {
@@ -166,6 +193,12 @@ public enum HeroClass {
 			case DUELIST:
 				return Badges.Badge.MASTERY_DUELIST;
 			case CLERIC:
+				return Badges.Badge.MASTERY_CLERIC;
+			case GNOLL:
+				return Badges.Badge.MASTERY_ROGUE;
+			case SHAMAN:
+				return Badges.Badge.MASTERY_MAGE;
+			case NECROMANCER:
 				return Badges.Badge.MASTERY_CLERIC;
 		}
 		return null;
@@ -260,6 +293,42 @@ public enum HeroClass {
 		new ScrollOfRemoveCurse().identify();
 	}
 
+	private static void initGnoll( Hero hero ) {
+		(hero.belongings.weapon = new Dagger()).identify();
+
+		RingOfBargain ring = new RingOfBargain();
+		(hero.belongings.ring = ring).identify();
+		ring.activate(hero);
+
+		ThrowingStone stones = new ThrowingStone();
+		stones.quantity(4).identify().collect();
+		Dungeon.quickslot.setSlot(0, stones);
+
+		new PotionOfStrength().identify();
+	}
+
+	private static void initShaman( Hero hero ) {
+		ShamanStaff staff = new ShamanStaff();
+		(hero.belongings.weapon = staff).identify();
+		staff.activate(hero);
+		Dungeon.quickslot.setSlot(0, staff);
+
+		PotionOfHealing healing = new PotionOfHealing();
+		healing.quantity(2).identify().collect();
+
+		new PotionOfHealing().identify();
+	}
+
+	private static void initNecromancer( Hero hero ) {
+		NecroStaff staff = new NecroStaff();
+		(hero.belongings.weapon = staff).identify();
+		staff.activate(hero);
+		Dungeon.quickslot.setSlot(0, staff);
+
+		new PotionOfHealing().quantity(1).identify().collect();
+		new ScrollOfRemoveCurse().identify();
+	}
+
 	public String title() {
 		return Messages.get(HeroClass.class, name());
 	}
@@ -290,6 +359,12 @@ public enum HeroClass {
 				return new ArmorAbility[]{new Challenge(), new ElementalStrike(), new Feint()};
 			case CLERIC:
 				return new ArmorAbility[]{new AscendedForm(), new Trinity(), new PowerOfMany()};
+			case GNOLL:
+				return new ArmorAbility[]{new Ambush(), new Negotiation(), new Trail()};
+			case SHAMAN:
+				return new ArmorAbility[]{new WeaknessTotemAbility(), new NaturesCurse(), new GuardianSpirit()};
+			case NECROMANCER:
+				return new ArmorAbility[]{new SummonSkeleton(), new DrainLife(), new DeathCurse()};
 		}
 	}
 
@@ -307,6 +382,12 @@ public enum HeroClass {
 				return Assets.Sprites.DUELIST;
 			case CLERIC:
 				return Assets.Sprites.CLERIC;
+			case GNOLL:
+				return Assets.Sprites.GNOLL_HERO;
+			case SHAMAN:
+				return Assets.Sprites.SHAMAN_HERO;
+			case NECROMANCER:
+				return Assets.Sprites.NECROMANCER_HERO;
 		}
 	}
 
@@ -324,6 +405,12 @@ public enum HeroClass {
 				return Assets.Splashes.DUELIST;
 			case CLERIC:
 				return Assets.Splashes.CLERIC;
+			case GNOLL:
+				return Assets.Splashes.ROGUE;
+			case SHAMAN:
+				return Assets.Splashes.MAGE;
+			case NECROMANCER:
+				return Assets.Splashes.WARRIOR;
 		}
 	}
 	
@@ -344,6 +431,10 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
 			case CLERIC:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
+			case GNOLL:
+			case SHAMAN:
+			case NECROMANCER:
+				return true;
 		}
 	}
 	

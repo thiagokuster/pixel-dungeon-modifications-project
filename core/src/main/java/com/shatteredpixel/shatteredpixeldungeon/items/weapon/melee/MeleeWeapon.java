@@ -267,7 +267,8 @@ public class MeleeWeapon extends Weapon {
 	public Grip grip() {
 		if (this instanceof Dagger || this instanceof Rapier || this instanceof Gloves
 				|| this instanceof Cudgel || this instanceof Shortsword || this instanceof Dirk
-				|| this instanceof Sai || this instanceof WornShortsword || this instanceof MagesStaff) {
+				|| this instanceof Sai || this instanceof WornShortsword || this instanceof MagesStaff
+				|| this instanceof ShamanStaff || this instanceof NecroStaff) {
 			return Grip.LIGHT;
 		}
 		if (this instanceof Sword || this instanceof Mace || this instanceof Scimitar

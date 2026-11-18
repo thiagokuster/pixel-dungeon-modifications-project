@@ -1035,6 +1035,20 @@ public abstract class Mob extends Char {
 
 			rollToDropLoot();
 
+			if (Dungeon.hero.heroClass == HeroClass.GNOLL) {
+				int coins = Math.max(1, Math.round((1 + Dungeon.depth / 2f) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClassPerks.goldMultiplier(Dungeon.hero)));
+				com.shatteredpixel.shatteredpixeldungeon.items.Heap coinsHeap = Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.Gold(coins), pos);
+				if (coinsHeap != null && coinsHeap.sprite != null) coinsHeap.sprite.drop();
+			}
+			if (Dungeon.hero.subClass == HeroSubClass.VAMPIRE
+					&& (cause == Dungeon.hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment)) {
+				int heal = 2 + Dungeon.hero.pointsInTalent(Talent.KILL_SIP);
+				Dungeon.hero.HP = Math.min(Dungeon.hero.HT, Dungeon.hero.HP + heal);
+				if (Dungeon.hero.sprite != null) {
+					Dungeon.hero.sprite.showStatus(com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.POSITIVE, "+" + heal);
+				}
+			}
+
 			if (cause == Dungeon.hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment){
 				if (Dungeon.hero.hasTalent(Talent.LETHAL_MOMENTUM)
 						&& Random.Float() < 0.34f + 0.33f* Dungeon.hero.pointsInTalent(Talent.LETHAL_MOMENTUM)){

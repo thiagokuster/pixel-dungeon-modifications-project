@@ -92,6 +92,12 @@ public abstract class RemainsItem extends Item {
 				return new BrokenHilt();
 			case CLERIC:
 				return new TornPage();
+			case GNOLL:
+				return new CloakScrap();
+			case SHAMAN:
+				return new BrokenStaff();
+			case NECROMANCER:
+				return new TornPage();
 		}
 	}
 

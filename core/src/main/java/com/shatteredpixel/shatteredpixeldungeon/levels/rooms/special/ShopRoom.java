@@ -128,6 +128,17 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn = generateItems();
 		}
 
+		int promotions = com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClassPerks.shopUpgrades(Dungeon.hero);
+		if (promotions > 0) {
+			for (Item item : itemsToSpawn) {
+				if (promotions <= 0) break;
+				if (item.isUpgradable() && item.level() < 2) {
+					item.upgrade();
+					promotions--;
+				}
+			}
+		}
+
 		Point entryInset = new Point(entrance());
 		if (entryInset.y == top){
 			entryInset.y++;

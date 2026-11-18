@@ -48,7 +48,16 @@ public enum HeroSubClass {
 	MONK(HeroIcon.MONK),
 
 	PRIEST(HeroIcon.PRIEST),
-	PALADIN(HeroIcon.PALADIN);
+	PALADIN(HeroIcon.PALADIN),
+
+	TRACKER(HeroIcon.FREERUNNER),
+	MERCHANT(HeroIcon.ASSASSIN),
+
+	WAR_SHAMAN(HeroIcon.BATTLEMAGE),
+	SPIRIT_SHAMAN(HeroIcon.WARDEN),
+
+	DEATH_LORD(HeroIcon.WARLOCK),
+	VAMPIRE(HeroIcon.PRIEST);
 
 	int icon;
 

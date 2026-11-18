@@ -4,7 +4,7 @@ Roguelike de masmorras em código aberto, feito a partir do [Shattered Pixel Dun
 
 Este repositório não é o jogo oficial. O nome do app é Pixel Dungeon Alterado e o ID do pacote é `com.thiagokuster.pixeldungeonalterado`, os dois definidos em `build.gradle`. Esse ID separa a instalação e os saves do Shattered Pixel Dungeon.
 
-O código está sob a licença [GPL-3.0](LICENSE.txt). Quem modificar e distribuir também precisa publicar o código-fonte sob a mesma licença. Os créditos de Evan Debenham, Watabou e dos demais colaboradores permanecem no jogo.
+O código está sob a licença [GPL-3.0](LICENSE.txt). Quem modificar e distribuir também precisa publicar o código-fonte sob a mesma licença. Os créditos de Evan Debenham, Watabou e dos demais colaboradores permanecem no jogo. Os sprites de herói do Gnoll, do Xamã e do Necromante foram montados a partir das camadas do [Remixed Dungeon](https://github.com/NYRDS/remixed-dungeon), de NYRDS, também sob GPL-3.0.
 
 ## Compilar
 

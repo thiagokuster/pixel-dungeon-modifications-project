@@ -612,7 +612,7 @@ public class Hero extends Char {
 			}
 		}
 
-		return Math.max(1, Math.round(evasion));
+		return Math.max(1, Math.round(evasion) + ClassPerks.defenseBonus(this));
 	}
 
 	@Override
@@ -679,6 +679,7 @@ public class Hero extends Char {
 			dmg = wep.damageRoll( this );
 
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
+			if (wep instanceof MissileWeapon) dmg += ClassPerks.thrownBonus(this);
 		} else {
 			dmg = RingOfForce.damageRoll(this);
 			if (RingOfForce.unarmedGetsWeaponAugment(this)){
@@ -1544,6 +1545,20 @@ public class Hero extends Char {
 		}
 
 		damage = Talent.onAttackProc( this, enemy, damage );
+
+		if (subClass == HeroSubClass.WAR_SHAMAN && enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShamanMark.class) != null) {
+			damage += 2 + pointsInTalent(Talent.WAR_DRUM) + pointsInTalent(Talent.BATTLE_FOCUS);
+		}
+
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gnoll.Ambush.Ready ambush =
+				buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gnoll.Ambush.Ready.class);
+		if (ambush != null && enemy instanceof Mob && ((Mob) enemy).surprisedBy(this)) {
+			damage += ambush.bonus;
+			ambush.detach();
+		} else if (ambush != null && ambush.halfOnSeen && enemy instanceof Mob) {
+			damage += Math.max(1, ambush.bonus / 2);
+			ambush.detach();
+		}
 
 		if (wep != null) {
 			damage = wep.proc( this, enemy, damage );

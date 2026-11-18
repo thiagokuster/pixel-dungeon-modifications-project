@@ -955,6 +955,15 @@ public class Badges {
 			case CLERIC:
 				badge = Badge.MASTERY_CLERIC;
 				break;
+			case GNOLL:
+				badge = Badge.MASTERY_ROGUE;
+				break;
+			case SHAMAN:
+				badge = Badge.MASTERY_MAGE;
+				break;
+			case NECROMANCER:
+				badge = Badge.MASTERY_CLERIC;
+				break;
 		}
 		
 		unlock(badge);

@@ -35,7 +35,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfBargain;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NecroStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShamanStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -94,6 +97,15 @@ public class VaultMirror extends NPC {
 					reward = new HolyTome().upgrade(8).identify(false);
 					((HolyTome) reward).directCharge(8);
 					break;
+				case GNOLL:
+					reward = new RingOfBargain().identify(false);
+					break;
+				case SHAMAN:
+					reward = new ShamanStaff().upgrade(2).identify(false);
+					break;
+				case NECROMANCER:
+					reward = new NecroStaff().upgrade(2).identify(false);
+					break;
 			}
 		Random.popGenerator();
 	}
@@ -125,6 +137,15 @@ public class VaultMirror extends NPC {
 								break;
 							case CLERIC:
 								sceneText += Messages.get(VaultMirror.class, "scene_cleric");
+								break;
+							case GNOLL:
+								sceneText += Messages.get(VaultMirror.class, "scene_rogue");
+								break;
+							case SHAMAN:
+								sceneText += Messages.get(VaultMirror.class, "scene_mage");
+								break;
+							case NECROMANCER:
+								sceneText += Messages.get(VaultMirror.class, "scene_warrior");
 								break;
 						}
 						sceneText += "\n\n" + Messages.get(VaultMirror.class, "scene_final");

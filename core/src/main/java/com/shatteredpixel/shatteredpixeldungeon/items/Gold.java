@@ -89,6 +89,9 @@ public class Gold extends Item {
 	@Override
 	public Item random() {
 		quantity = Random.IntRange( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 );
+		if (Dungeon.hero != null) {
+			quantity = Math.max(1, Math.round(quantity * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClassPerks.goldMultiplier(Dungeon.hero)));
+		}
 		return this;
 	}
 

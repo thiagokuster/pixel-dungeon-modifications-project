@@ -197,6 +197,36 @@ public enum Talent {
 	//Power of Many T4
 	BEAMING_RAY(183, 4), LIFE_LINK(184, 4), STASIS(185, 4),
 
+	//Gnoll
+	FAT_PURSE(4), KEEN_BARGAIN(5), SHARP_EYE(6), PACK_THROW(7),
+	TRAIL_SENSE(8), TRAP_NOSE(9), RICH_OFFERS(10), COIN_POUCH(11), QUIET_STEP(12),
+	FAR_SCOUT(13, 3), MASTER_DEAL(14, 3),
+	KEEN_NOSE(15, 3), LONG_WATCH(16, 3), SOFT_STEPS(17, 3),
+	EXTRA_COIN(18, 3), PROMOTE_WARES(19, 3), HAGGLE(20, 3),
+	AMBUSH_OPENING(21, 4), AMBUSH_EDGE(22, 4), AMBUSH_FADE(23, 4),
+	HAGGLE_BURST(24, 4), COIN_TRICK(25, 4), FAIR_PRICE(27, 4),
+	TRAIL_MARK(28, 4), TRAIL_TRAP(29, 4), TRAIL_EYE(30, 4),
+
+	//Shaman
+	STAFF_REACH(32), LONG_MARK(33), QUICK_STAFF(34), WARDING_WOOD(35),
+	TOTEM_REACH(36), DEEP_CURSE(37), SPIRIT_MEND(38), STAFF_SURGE(39), NATURES_GRIP(40),
+	WAR_DRUM(41, 3), SPIRIT_BOND(42, 3),
+	BATTLE_FOCUS(43, 3), MARKED_PREY(44, 3), STAFF_RHYTHM(45, 3),
+	GENTLE_CURRENT(46, 3), TOTEM_HEART(47, 3), SPIRIT_VEIL(48, 3),
+	WIDE_TOTEM(49, 4), TOTEM_ROOT(50, 4), TOTEM_ECHO(51, 4),
+	CURSE_SPREAD(52, 4), CURSE_BITE(53, 4), CURSE_LINGER(54, 4),
+	SPIRIT_SHIELD(55, 4), SPIRIT_ALLY(56, 4), SPIRIT_LINK(57, 4),
+
+	//Necromancer
+	THICK_BONE(64), DEEP_DRINK(65), GRAVE_SIGHT(66), SECOND_RISING(67),
+	LONGER_DEAD(68), EFFICIENT_DRINK(69), BONE_ARMOR(70), GRAVE_PACT(71), LAST_RITE(72),
+	LORD_BONE(73, 3), BLOOD_PACT(74, 3),
+	STRONGER_DEAD(75, 3), ENDURING_DEAD(76, 3), PACK_OF_BONES(77, 3),
+	RICHER_DRINK(78, 3), KILL_SIP(79, 3), BLOOD_BARRIER(80, 3),
+	SUMMON_MIGHT(81, 4), SUMMON_PACK(82, 4), SUMMON_GUARD(83, 4),
+	DRAIN_REACH(84, 4), DRAIN_BURST(85, 4), DRAIN_LEECH(86, 4),
+	CURSE_MARK(87, 4), CURSE_SHARE(88, 4), CURSE_HOLD(89, 4),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -462,6 +492,12 @@ public enum Talent {
 				case DUELIST:
 					return 154;
 				case CLERIC:
+					return 186;
+				case GNOLL:
+					return 90;
+				case SHAMAN:
+					return 58;
+				case NECROMANCER:
 					return 186;
 			}
 		} else {
@@ -994,6 +1030,15 @@ public enum Talent {
 			case CLERIC:
 				Collections.addAll(tierTalents, SATIATED_SPELLS, HOLY_INTUITION, SEARING_LIGHT, SHIELD_OF_LIGHT);
 				break;
+			case GNOLL:
+				Collections.addAll(tierTalents, FAT_PURSE, KEEN_BARGAIN, SHARP_EYE, PACK_THROW);
+				break;
+			case SHAMAN:
+				Collections.addAll(tierTalents, STAFF_REACH, LONG_MARK, QUICK_STAFF, WARDING_WOOD);
+				break;
+			case NECROMANCER:
+				Collections.addAll(tierTalents, THICK_BONE, DEEP_DRINK, GRAVE_SIGHT, SECOND_RISING);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1023,6 +1068,15 @@ public enum Talent {
 			case CLERIC:
 				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_INSCRIPTION, SUNRAY, DIVINE_SENSE, BLESS);
 				break;
+			case GNOLL:
+				Collections.addAll(tierTalents, TRAIL_SENSE, TRAP_NOSE, RICH_OFFERS, COIN_POUCH, QUIET_STEP);
+				break;
+			case SHAMAN:
+				Collections.addAll(tierTalents, TOTEM_REACH, DEEP_CURSE, SPIRIT_MEND, STAFF_SURGE, NATURES_GRIP);
+				break;
+			case NECROMANCER:
+				Collections.addAll(tierTalents, LONGER_DEAD, EFFICIENT_DRINK, BONE_ARMOR, GRAVE_PACT, LAST_RITE);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1051,6 +1105,15 @@ public enum Talent {
 				break;
 			case CLERIC:
 				Collections.addAll(tierTalents, CLEANSE, LIGHT_READING);
+				break;
+			case GNOLL:
+				Collections.addAll(tierTalents, FAR_SCOUT, MASTER_DEAL);
+				break;
+			case SHAMAN:
+				Collections.addAll(tierTalents, WAR_DRUM, SPIRIT_BOND);
+				break;
+			case NECROMANCER:
+				Collections.addAll(tierTalents, LORD_BONE, BLOOD_PACT);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1115,6 +1178,24 @@ public enum Talent {
 				break;
 			case PALADIN:
 				Collections.addAll(tierTalents, LAY_ON_HANDS, AURA_OF_PROTECTION, WALL_OF_LIGHT);
+				break;
+			case TRACKER:
+				Collections.addAll(tierTalents, KEEN_NOSE, LONG_WATCH, SOFT_STEPS);
+				break;
+			case MERCHANT:
+				Collections.addAll(tierTalents, EXTRA_COIN, PROMOTE_WARES, HAGGLE);
+				break;
+			case WAR_SHAMAN:
+				Collections.addAll(tierTalents, BATTLE_FOCUS, MARKED_PREY, STAFF_RHYTHM);
+				break;
+			case SPIRIT_SHAMAN:
+				Collections.addAll(tierTalents, GENTLE_CURRENT, TOTEM_HEART, SPIRIT_VEIL);
+				break;
+			case DEATH_LORD:
+				Collections.addAll(tierTalents, STRONGER_DEAD, ENDURING_DEAD, PACK_OF_BONES);
+				break;
+			case VAMPIRE:
+				Collections.addAll(tierTalents, RICHER_DRINK, KILL_SIP, BLOOD_BARRIER);
 				break;
 		}
 		for (Talent talent : tierTalents){

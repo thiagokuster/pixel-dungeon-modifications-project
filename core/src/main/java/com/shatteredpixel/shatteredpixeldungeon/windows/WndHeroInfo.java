@@ -76,6 +76,15 @@ public class WndHeroInfo extends WndTabbed {
 			case CLERIC:
 				tabIcon = new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME, null);
 				break;
+			case GNOLL:
+				tabIcon = new ItemSprite(ItemSpriteSheet.DAGGER, null);
+				break;
+			case SHAMAN:
+				tabIcon = new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null);
+				break;
+			case NECROMANCER:
+				tabIcon = new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null);
+				break;
 		}
 
 		int finalHeight = MIN_HEIGHT;
@@ -205,6 +214,23 @@ public class WndHeroInfo extends WndTabbed {
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME),
 							Icons.TALENT.get(),
 							new ItemSprite(ItemSpriteSheet.CUDGEL),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case GNOLL:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.GOLD),
+							new ItemSprite(ItemSpriteSheet.DAGGER),
+							new ItemSprite(ItemSpriteSheet.THROWING_STONE),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case SHAMAN:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.MAGES_STAFF),
+							new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE),
+							new ItemSprite(ItemSpriteSheet.POTION_CRIMSON),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case NECROMANCER:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.MAGES_STAFF),
+							new ItemSprite(ItemSpriteSheet.POTION_CRIMSON),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 			}

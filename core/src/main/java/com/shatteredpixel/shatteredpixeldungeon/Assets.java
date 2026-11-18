@@ -275,6 +275,11 @@ public class Assets {
 		public static final String HUNTRESS = "sprites/huntress.png";
 		public static final String DUELIST  = "sprites/duelist.png";
 		public static final String CLERIC   = "sprites/cleric.png";
+		// Hero sheets composed from Remixed Dungeon layers (NYRDS, GPL-3.0).
+		// https://github.com/NYRDS/remixed-dungeon
+		public static final String GNOLL_HERO = "sprites/hero_gnoll.png";
+		public static final String SHAMAN_HERO = "sprites/hero_shaman.png";
+		public static final String NECROMANCER_HERO = "sprites/hero_necromancer.png";
 		public static final String AVATARS  = "sprites/avatars.png";
 		public static final String PET      = "sprites/pet.png";
 		public static final String AMULET   = "sprites/amulet.png";
