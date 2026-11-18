@@ -157,7 +157,7 @@ public class NecroStaff extends MeleeWeapon {
 	}
 
 	public static int skeletonTurns(Hero hero) {
-		int turns = 16;
+		int turns = 50;
 		turns += 4 * hero.pointsInTalent(Talent.LONGER_DEAD);
 		turns += 4 * hero.pointsInTalent(Talent.ENDURING_DEAD);
 		if (hero.subClass == HeroSubClass.DEATH_LORD) turns += 8;

@@ -24,7 +24,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class RaisedSkeleton extends Mob {
@@ -44,7 +48,8 @@ public class RaisedSkeleton extends Mob {
 
 	public void setPower(int hp, int turns) {
 		HT = HP = Math.max(1, hp);
-		Buff.affect(this, Fades.class).left = Math.max(1, turns);
+		Fades fades = Buff.affect(this, Fades.class);
+		fades.left = fades.total = Math.max(1, turns);
 	}
 
 	@Override
@@ -62,17 +67,60 @@ public class RaisedSkeleton extends Mob {
 		return Random.NormalIntRange(0, 2);
 	}
 
+	@Override
+	public void die(Object cause) {
+		if (cause instanceof Fades) {
+			GLog.w(Messages.get(this, "crumbles"));
+		}
+		super.die(cause);
+	}
+
 	public static class Fades extends Buff {
-		public int left = 15;
+		public int left = 50;
+		public int total = 50;
+
+		private static final String LEFT = "left";
+		private static final String TOTAL = "total";
 
 		@Override
 		public boolean act() {
 			left--;
 			if (left <= 0 && target.isAlive()) {
 				target.die(this);
+				return true;
 			}
 			spend(TICK);
 			return true;
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.TIME;
+		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(Math.max(0, left));
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (total - left) / (float)Math.max(1, total));
+		}
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(LEFT, left);
+			bundle.put(TOTAL, total);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			left = bundle.getInt(LEFT);
+			total = bundle.getInt(TOTAL);
+			if (total <= 0) total = Math.max(1, left);
 		}
 	}
 }

@@ -406,11 +406,11 @@ public enum HeroClass {
 			case CLERIC:
 				return Assets.Splashes.CLERIC;
 			case GNOLL:
-				return Assets.Splashes.ROGUE;
+				return Assets.Splashes.GNOLL;
 			case SHAMAN:
-				return Assets.Splashes.MAGE;
+				return Assets.Splashes.SHAMAN;
 			case NECROMANCER:
-				return Assets.Splashes.WARRIOR;
+				return Assets.Splashes.NECROMANCER;
 		}
 	}
 	
